@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useUser } from "@clerk/nextjs";
@@ -16,11 +15,13 @@ import { generateCourseContent } from "./_utils/generateCourseContent";
 import LoadingDialog from "../_components/LoadingDialog";
 import { CourseType } from "@/types/types";
 
-type ParamsType = {
-  courseId: string;
+type PageProps = {
+  params: {
+    courseId: string;
+  };
 };
 
-const CoursePageLayout = ({ params }: { params: ParamsType }) => {
+export default function CoursePage({ params }: PageProps) {
   const { user, isLoaded } = useUser();
   const [course, setCourse] = useState<CourseType | null>(null);
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,6 @@ const CoursePageLayout = ({ params }: { params: ParamsType }) => {
         );
 
       if (res.length === 0) {
-        console.warn("Course not found or unauthorized access.");
         router.push("/dashboard");
         return;
       }
@@ -96,6 +96,4 @@ const CoursePageLayout = ({ params }: { params: ParamsType }) => {
       </Button>
     </div>
   );
-};
-
-export default CoursePageLayout;
+}
