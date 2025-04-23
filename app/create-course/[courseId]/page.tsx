@@ -2,7 +2,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 
@@ -21,18 +21,14 @@ type ParamsType = {
 };
 
 const CoursePageLayout = ({ params }: { params: ParamsType }) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const [course, setCourse] = useState<CourseType | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    if (params?.courseId && user) {
-      getCourse(params.courseId);  // Ensure we are using the latest courseId from params
-    }
-  }, [params, user]);  // Make sure to only call when `params` or `user` changes
+  const getCourse = useCallback(async (courseId: string) => {
+    if (!user) return;
 
-  const getCourse = async (courseId: string) => {
     try {
       const res = await db
         .select()
@@ -44,28 +40,49 @@ const CoursePageLayout = ({ params }: { params: ParamsType }) => {
           )
         );
 
-      setCourse(res[0] as CourseType);  // Update course state after fetching
+      if (res.length === 0) {
+        console.warn("Course not found or unauthorized access.");
+        router.push("/dashboard");
+        return;
+      }
+
+      setCourse(res[0] as CourseType);
     } catch (error) {
-      console.log("Error fetching course", error);
+      console.error("Error fetching course", error);
     }
-  };
+  }, [user, router]);
+
+  useEffect(() => {
+    if (params?.courseId && isLoaded && user) {
+      getCourse(params.courseId);
+    }
+  }, [params, isLoaded, user, getCourse]);
 
   const handleGenerateCourseContent = async () => {
     if (!course) return;
 
     try {
       await generateCourseContent(course, setLoading);
+
       await db
         .update(CourseList)
         .set({ isPublished: true })
         .where(eq(CourseList.courseId, params.courseId));
+
       router.replace(`/create-course/${params.courseId}/finish`);
     } catch (error) {
-      console.log("Error generating course content", error);
+      console.error("Error generating course content", error);
     }
   };
 
-  if (!course) return null;
+  if (!course) {
+    return (
+      <div className="mt-10 px-7 md:px-20 lg:px-44">
+        <LoadingDialog loading={true} />
+        <p className="text-center text-muted-foreground">Loading course...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-10 px-7 md:px-20 lg:px-44">
@@ -74,8 +91,8 @@ const CoursePageLayout = ({ params }: { params: ParamsType }) => {
       <CourseBasicInfo courseInfo={course} onRefresh={() => getCourse(params.courseId)} />
       <CourseDetail courseDetail={course} />
       <ChapterList course={course} onRefresh={() => getCourse(params.courseId)} />
-      <Button className="my-10" onClick={handleGenerateCourseContent}>
-        Generate Course Content
+      <Button className="my-10" onClick={handleGenerateCourseContent} disabled={loading}>
+        {loading ? "Generating..." : "Generate Course Content"}
       </Button>
     </div>
   );
