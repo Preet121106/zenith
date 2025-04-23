@@ -1,4 +1,4 @@
-import { LuTimer, LuCheckCircle2 } from "react-icons/lu";
+import { LuTimer, LuCircleCheck } from "react-icons/lu";
 import EditChapters from "./_edit/EditChapters";
 import { CourseType } from "@/types/types";
 
@@ -43,7 +43,7 @@ const ChapterList = ({ course, onRefresh, edit = true }: ChapterListProps) => {
                 </p>
               </div>
             </div>
-            <LuCheckCircle2 className="text-4xl text-gray-300 flex-none" />
+            <LuCircleCheck className="text-4xl text-gray-300 flex-none" />
           </div>
         ))}
       </div>

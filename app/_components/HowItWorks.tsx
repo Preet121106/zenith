@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { IconType } from "react-icons/lib";
-import { LuBookOpen, LuFileVideo, LuShare2, LuUser2 } from "react-icons/lu";
+import { LuBookOpen, LuFileVideo, LuShare2, LuUser } from "react-icons/lu";
 
 interface FeatureProps {
   icon: IconType;
@@ -11,7 +11,7 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
   {
-    icon: LuUser2,
+    icon: LuUser,
     title: "Register for an Account",
     description:
       "Sign up for a free account to access the course creation tools. Once registered, you’ll be able to log in and start building your personalized courses",

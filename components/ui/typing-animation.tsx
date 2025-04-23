@@ -19,19 +19,19 @@ export default function TypingAnimation({
 
    useEffect(() => {
       const typingEffect = setInterval(() => {
-         if (i < text.length) {
-            setDisplayedText(text.substring(0, i + 1))
-            setI(i + 1)
-         }
-         else {
-            clearInterval(typingEffect)
-         }
+         setI((prevI) => {
+            if (prevI < text.length) {
+               setDisplayedText(text.substring(0, prevI + 1))
+               return prevI + 1
+            } else {
+               clearInterval(typingEffect)
+               return prevI
+            }
+         })
       }, duration)
 
-      return () => {
-         clearInterval(typingEffect)
-      }
-   }, [duration, i])
+      return () => clearInterval(typingEffect)
+   }, [duration, text]) // Add `text` as a dependency to rerun effect when it changes
 
    return (
       <h1

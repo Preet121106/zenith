@@ -36,13 +36,12 @@ const CourseCard = ({
     }
   };
 
-  // hover:border-primary hover:scale-105 transition-all cursor-pointer mt-4
   return (
-    <div className="shadow-sm rounded-lg border p-2 ">
+    <div className="shadow-sm rounded-lg border p-2">
       <Link href={`/course/${course.courseId}`}>
         <Image
-          src={course?.courseBanner ?? "/thumbnail.png"}
-          alt={course?.courseName ?? "Ai Course Generator"}
+          src={course?.courseBanner ?? "/brain-circuit.svg"}
+          alt={course?.courseName ?? "Zenith"}
           width={300}
           height={200}
           priority
@@ -65,8 +64,11 @@ const CourseCard = ({
         <p className="text-sm text-gray-400 my-1">{course.category}</p>
 
         <div className="flex items-center justify-between">
+          {/* Safely access course.courseOutput.chapters */}
           <h2 className="flex items-center gap-2 p-1 bg-purple-50 text-primary text-sm rounded-sm">
-            <MdMenuBook /> {course.courseOutput.chapters.length} Chapters
+            <MdMenuBook />
+            {/* Use optional chaining to prevent error */}
+            {course.courseOutput?.chapters?.length ?? 0} Chapters
           </h2>
           <h2 className="text-sm p-1 bg-purple-50 text-primary rounded-sm">
             {course.level} Level
@@ -76,12 +78,12 @@ const CourseCard = ({
         {displayUser && (
           <div className="flex justify-start items-center gap-3 mt-2">
             <Image
-              src={course?.userprofileimage || "/userProfile.png"}
-              alt={course?.username || "Ai Course Generator"}
+              src={course?.userprofileimage || "/brain-circuit.svg"}
+              alt={course?.username || "Zenith"}
               width={30}
               height={30}
               priority
-              className="rounded-full "
+              className="rounded-full"
             />
             <Badge variant={"outline"}>{course.username}</Badge>
           </div>

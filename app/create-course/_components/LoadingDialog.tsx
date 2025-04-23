@@ -1,13 +1,9 @@
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import Image from "next/image";
 
@@ -17,7 +13,7 @@ const LoadingDialog = ({ loading }: { loading: boolean }) => {
       <AlertDialogContent>
         <AlertDialogHeader className="flex flex-col items-center p-10">
           <AlertDialogTitle>
-            Hold on, your course will be generated soon!!!!
+            Hold on, AI is running Errands!!!...
           </AlertDialogTitle>
           <AlertDialogDescription>
             <Image

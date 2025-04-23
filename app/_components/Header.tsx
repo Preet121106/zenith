@@ -9,8 +9,18 @@ import Link from "next/link";
 const Header = () => {
   const { user } = useUser();
   return (
-    <div className="flex justify-between p-5 shadow-sm">
-      <Image src={"/logo.png"} alt="logo" width={150} height={100} priority className="object-cover" />
+    <div className="flex justify-between p-5 shadow-sm items-center">
+      <Link href="/dashboard">
+        <Image
+          src="/zenith-logo.png"
+          alt="logo"
+          width={150}
+          height={100}
+          priority
+          className="object-cover cursor-pointer"
+        />
+      </Link>
+
       {!user ? (
         <Link href="/sign-up">
           <ShinyButton text="Sign Up" />

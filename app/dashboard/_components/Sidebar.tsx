@@ -16,7 +16,7 @@ const Sidebar = () => {
     <div className="fixed h-full md:w-64 p-5 shadow-md">
       <WordRotate
         className="text-4xl font-bold text-black dark:text-white text-center"
-        words={["AI", "Course", "Generator"]}
+        words={["Follow", "your", "Dreams"]}
       />
       <hr className="my-5" />
 
@@ -36,18 +36,6 @@ const Sidebar = () => {
           </Link>
         ))}
       </ul>
-
-      <div className="absolute bottom-10 w-[80%]">
-        <Progress value={(userCourseList.length / 5) * 100} />
-        <h2 className="text-sm my-2">
-          {userCourseList.length} out of 5 Courses created
-        </h2>
-        <Link href="/upgrade">
-          <h2 className="text-xs text-gray-500">
-            Upgrade your Plan for Unlimited
-          </h2>
-        </Link>
-      </div>
     </div>
   );
 };

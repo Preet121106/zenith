@@ -27,8 +27,8 @@ const UserToolTip = ({
         </TooltipTrigger>
         <TooltipContent variant={"secondary"}>
           <Image
-            src={userProfileImage || "/userProfile.png"}
-            alt={username || "AI Course Generator"}
+            src={userProfileImage || "/brain-circuit.svg"}
+            alt={username || "Zenith"}
             width={50}
             height={50}
             priority

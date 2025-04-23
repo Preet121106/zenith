@@ -24,7 +24,7 @@ const AddCourse = () => {
           Create new course with AI, share with friends and Earn some penny
         </p>
       </div>
-      <Link href={userCourseList.length >= 5 ? "/dashboard/upgrade" : "/create-course"}>
+      <Link href={userCourseList.length >= 50000000000000000000000000000000000 ? "/dashboard/upgrade" : "/create-course"}>
         <Button className="gap-2">
           <FaWandMagicSparkles />
           Create AI course

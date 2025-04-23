@@ -86,6 +86,12 @@ const SelectOption = () => {
           />
         </div>
       </div>
+
+      {/* 📌 Footer Note */}
+      <p className="text-sm text-muted-foreground mt-10 text-center italic">
+        Course Chapters are created according to availability of the content on social media.<br />
+          No. of Chapters might differ...
+      </p>
     </div>
   );
 };

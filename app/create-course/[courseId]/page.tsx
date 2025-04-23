@@ -1,57 +1,58 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { and, eq } from "drizzle-orm";
 
 import { db } from "@/configs/db";
 import { CourseList } from "@/schema/schema";
-import { useUser } from "@clerk/nextjs";
-import { and, eq } from "drizzle-orm";
-import { useEffect, useState } from "react";
 import CourseBasicInfo from "./_components/CourseBasicInfo";
 import CourseDetail from "./_components/CourseDetail";
 import ChapterList from "./_components/ChapterList";
 import { Button } from "@/components/ui/button";
 import { generateCourseContent } from "./_utils/generateCourseContent";
 import LoadingDialog from "../_components/LoadingDialog";
-import { useRouter } from "next/navigation";
 import { CourseType } from "@/types/types";
 
-export type ParamsType = {
+type ParamsType = {
   courseId: string;
 };
 
 const CoursePageLayout = ({ params }: { params: ParamsType }) => {
   const { user } = useUser();
   const [course, setCourse] = useState<CourseType | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    params && getCourse();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params, user]);
+    if (params?.courseId && user) {
+      getCourse(params.courseId);  // Ensure we are using the latest courseId from params
+    }
+  }, [params, user]);  // Make sure to only call when `params` or `user` changes
 
-  const getCourse = async () => {
-    const res = await db
-      .select()
-      .from(CourseList)
-      .where(
-        and(
-          eq(CourseList.courseId, params.courseId),
-          eq(
-            CourseList.createdBy,
-            user?.primaryEmailAddress?.emailAddress ?? ""
+  const getCourse = async (courseId: string) => {
+    try {
+      const res = await db
+        .select()
+        .from(CourseList)
+        .where(
+          and(
+            eq(CourseList.courseId, courseId),
+            eq(CourseList.createdBy, user?.primaryEmailAddress?.emailAddress ?? "")
           )
-        )
-      );
-    setCourse(res[0] as CourseType);
-    // console.log("res", res);
+        );
+
+      setCourse(res[0] as CourseType);  // Update course state after fetching
+    } catch (error) {
+      console.log("Error fetching course", error);
+    }
   };
 
-  // console.log(course);
-
-  if (!course) return null;
-
   const handleGenerateCourseContent = async () => {
+    if (!course) return;
+
     try {
       await generateCourseContent(course, setLoading);
       await db
@@ -60,25 +61,19 @@ const CoursePageLayout = ({ params }: { params: ParamsType }) => {
         .where(eq(CourseList.courseId, params.courseId));
       router.replace(`/create-course/${params.courseId}/finish`);
     } catch (error) {
-      console.log(error);
+      console.log("Error generating course content", error);
     }
   };
+
+  if (!course) return null;
 
   return (
     <div className="mt-10 px-7 md:px-20 lg:px-44">
       <h2 className="font-bold text-center text-2xl">Course Layout</h2>
-
       <LoadingDialog loading={loading} />
-
-      {/* Basic Info */}
-      <CourseBasicInfo courseInfo={course} onRefresh={() => getCourse()} />
-
-      {/* Course Details */}
+      <CourseBasicInfo courseInfo={course} onRefresh={() => getCourse(params.courseId)} />
       <CourseDetail courseDetail={course} />
-
-      {/* List Of Lessons */}
-      <ChapterList course={course} onRefresh={() => getCourse()} />
-
+      <ChapterList course={course} onRefresh={() => getCourse(params.courseId)} />
       <Button className="my-10" onClick={handleGenerateCourseContent}>
         Generate Course Content
       </Button>

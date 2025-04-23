@@ -17,8 +17,8 @@ const ExplorePage = () => {
     const result = await db
       .select()
       .from(CourseList)
-      .limit(8)
-      .offset(pageIndex * 8);
+      .limit(33)
+      .offset(pageIndex * 32);
     // console.log(result);
     setCourseList(result as CourseType[]);
   };
@@ -47,7 +47,7 @@ const ExplorePage = () => {
             </div>
           ))
         ) : (
-          <SkeletonLoading items={8} />
+          <SkeletonLoading items={32} />
         )}
       </div>
 
@@ -61,7 +61,7 @@ const ExplorePage = () => {
         <Badge>Page : {pageIndex + 1}</Badge>
         <Button
           onClick={() => setPageIndex(pageIndex + 1)}
-          disabled={courseList?.length !== 8}
+          disabled={courseList?.length !== 32}
         >
           Next
         </Button>

@@ -33,7 +33,7 @@ const UserCourseList = () => {
     // console.log(res);
   };
 
-  if (courses?.length === 0) return <div className="flex justify-center items-center mt-44">No courses found</div>;
+  if (courses?.length === 0) return <div className="flex justify-center items-center mt-44">Start Studying before it&apos;s too late</div>;
   return (
     <div className="mt-10">
       <h2 className="font-medium text-lg">My AI Courses</h2>

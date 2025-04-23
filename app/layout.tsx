@@ -6,9 +6,21 @@ import { ClerkLoaded, ClerkProvider, GoogleOneTap } from "@clerk/nextjs";
 const inter = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Course Generator",
+  title: "Zenith",
   description:
-    "AI Course Generator is a platform that allows users to easily create and generate educational courses using artificial intelligence. By simply entering course details like name, duration, number of chapters, and specifying if videos are included, AI generates the entire course structure along with relevant YouTube videos for each chapter.",
+    "Zenith is a platform that allows users to easily create and generate educational courses using artificial intelligence. By simply entering course details like name, duration, number of chapters, and specifying if videos are included, AI generates the entire course structure along with relevant YouTube videos for each chapter.",
+  keywords: [
+    "AI Course Generator",
+    "AI Course Creation",
+    "AI Education",
+    "AI Learning",
+    "AI Course Builder",
+    "Zenith AI",
+    "Zenith",
+    "Course Creation",
+    "Educational Technology",
+    "Online Learning",
+  ],
 };
 
 export default function RootLayout({
@@ -18,12 +30,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ClerkProvider>
-        <GoogleOneTap />
-        <body className={inter.className}>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body className={inter.className}>
+        <ClerkProvider>
+          <GoogleOneTap />
           <ClerkLoaded>{children}</ClerkLoaded>
-        </body>
-      </ClerkProvider>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }

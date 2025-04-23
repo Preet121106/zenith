@@ -66,7 +66,7 @@ const CourseBasicInfo = ({
         <div>
           <label htmlFor="image-upload">
             <Image
-              src={selectedImage ? selectedImage : "/thumbnail.png"}
+              src={selectedImage ? selectedImage : "/brain-circuit.svg"}
               alt="image"
               width={200}
               height={200}

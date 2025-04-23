@@ -8,7 +8,7 @@ export default function Page() {
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
           <Image
             alt="Image"
-            src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=3448&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/signinpic.svg"
             className="absolute inset-0 h-full w-full object-cover opacity-80"
             priority
             width={1000}
@@ -32,12 +32,11 @@ export default function Page() {
             </a>
 
             <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-              Welcome to AI Course Generator 🦑
+              Welcome to Zenith
             </h2>
 
             <p className="mt-4 leading-relaxed text-white/90">
-              Feel free to sign in and start generating custom learning paths
-              for your students.
+              Feel free to sign in and start generating custom learning paths.
             </p>
           </div>
         </section>
@@ -64,12 +63,11 @@ export default function Page() {
               </a>
 
               <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Welcome to AI Course Generator 🦑
+                Welcome to Zenith
               </h1>
 
               <p className="mt-4 leading-relaxed text-gray-500">
-                Feel free to sign in and start generating custom learning paths
-                for your students.
+                Feel free to sign in and start generating custom learning paths.
               </p>
             </div>
             <SignIn />

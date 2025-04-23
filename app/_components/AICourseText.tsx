@@ -6,7 +6,7 @@ export const AICourseText = () => {
   return (
     <section className="py-24 sm:py-32 border rounded">
       <VelocityScroll
-        text="Effortless Course Creation with AI – Transform Ideas into Learning Experiences - AI Course Generator"
+        text="Effortless Course Creation with AI – Transform Ideas into Learning Experiences - Zenith"
         default_velocity={1}
         className="font-display text-center text-4xl font-bold tracking-[-0.02em] text-black drop-shadow-sm md:text-7xl md:leading-[5rem] dark:text-white"
       />
