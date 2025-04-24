@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+
+import React, { useContext, useEffect, useState } from "react";
 import { stepperOptions } from "./_constants/stepperOptions";
 import { Button } from "@/components/ui/button";
 import SelectCategory from "./_components/SelectCategory";
@@ -14,7 +16,6 @@ import { storeDataInDatabase } from "./_utils/saveDataInDb";
 import uuid4 from "uuid4";
 import { useRouter } from "next/navigation";
 
-//may be we need to remove these imports if we found any other best way
 import { db } from "@/configs/db";
 import { CourseList } from "@/schema/schema";
 import { eq } from "drizzle-orm";
@@ -26,10 +27,11 @@ const CreateCoursePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { userInput } = useContext(UserInputContext);
 
-  // Don't Know im doing wrong here
-  const { userCourseList, setUserCourseList } = useContext(
-    UserCourseListContext
-  );
+  const { userCourseList, setUserCourseList } = useContext(UserCourseListContext);
+
+  const { user } = useUser();
+  const router = useRouter();
+
   const getUserCourses = async () => {
     const res = await db
       .select()
@@ -40,16 +42,10 @@ const CreateCoursePage = () => {
     setUserCourseList(res as CourseType[]);
   };
 
-  const { user } = useUser();
-
-  const router = useRouter();
-
   const allowNextStep = () => {
-    if (step === 0) {
-      return userInput?.category?.length ?? 0 > 0;
-    } else if (step === 1) {
-      return !!userInput?.topic && !!userInput?.description;
-    } else if (step === 2) {
+    if (step === 0) return userInput?.category?.length ?? 0 > 0;
+    if (step === 1) return !!userInput?.topic && !!userInput?.description;
+    if (step === 2) {
       return (
         !!userInput?.difficulty &&
         !!userInput?.duration &&
@@ -64,14 +60,13 @@ const CreateCoursePage = () => {
     const BASIC_PROMPT = `Generate a course tutorial on following details with field name, description, along with the chapter name about and duration: Category '${userInput?.category}' Topic '${userInput?.topic}' Description '${userInput.description}' Level '${userInput?.difficulty}' Duration '${userInput?.duration}' chapters '${userInput?.totalChapters}' in JSON format.\n`;
     setLoading(true);
     try {
-      let id = uuid4();
+      const id = uuid4();
       const result = await generateCourseLayout.sendMessage(BASIC_PROMPT);
       const data = JSON.parse(result.response.text());
-      // console.log("Data", data);
       await storeDataInDatabase(id, userInput, data, user);
       router.replace(`/create-course/${id}`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -82,7 +77,6 @@ const CreateCoursePage = () => {
     if (userCourseList.length > 5) {
       router.replace("/dashboard/upgrade");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, userCourseList]);
 
   return (
@@ -114,7 +108,7 @@ const CreateCoursePage = () => {
         </div>
       </div>
 
-      <div className="px-10 md:px-20 lg-px-44 mt-10 ">
+      <div className="px-10 md:px-20 lg-px-44 mt-10">
         {step === 0 ? (
           <SelectCategory />
         ) : step === 1 ? (
@@ -125,17 +119,17 @@ const CreateCoursePage = () => {
 
         <div className="flex justify-between mt-10">
           <Button
-            variant={"outline"}
+            variant="outline"
             onClick={() => setStep(step - 1)}
-            disabled={step == 0}
+            disabled={step === 0}
           >
             Previous
           </Button>
-          {stepperOptions.length - 1 == step ? (
+          {stepperOptions.length - 1 === step ? (
             <Button
               disabled={!allowNextStep() || loading}
               onClick={generateCourse}
-              className={`gap-2`}
+              className="gap-2"
             >
               <FaWandMagicSparkles /> Generate Course
             </Button>
